@@ -1,12 +1,11 @@
 package com.GraduationProject.test.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -16,17 +15,23 @@ import javax.validation.constraints.NotEmpty;
 @Table(name = "users")
 public class AppUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     @NotEmpty(message = "Name is required")
-    @Column(unique = true)
+    @Column(name = "user_name", unique = true)
     private String name;
 
+    @NotNull
+    @Size(min = 6, max = 15)
+    @Column(name = "password")
     @NotEmpty(message = "Password is required")
     private String password;
 
+    @NotNull
     @NotEmpty(message = "Phone number is required")
-    @Column(unique = true)
+    @Column(name = "phone_number", unique = true, length = 10)
     private String phoneNumber;
 }

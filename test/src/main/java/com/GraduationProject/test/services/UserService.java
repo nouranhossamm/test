@@ -1,7 +1,6 @@
 package com.GraduationProject.test.services;
 
 import com.GraduationProject.test.DTOs.LoginDTO;
-import com.GraduationProject.test.DTOs.LoginMesage;
 import com.GraduationProject.test.DTOs.UserDTO;
 import com.GraduationProject.test.entities.AppUser;
 import com.GraduationProject.test.repositories.UserRepository;
@@ -15,38 +14,38 @@ public class UserService{
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder encoder;
 
     public String addUser(UserDTO userDTO) {
         AppUser appUser = new AppUser(
                 userDTO.getId(),
                 userDTO.getName(),
-                userDTO.getPhoneNumber(),
-                this.passwordEncoder.encode(userDTO.getPassword())
+                this.encoder.encode(userDTO.getPassword()),
+                userDTO.getPhoneNumber()
         );
         userRepository.save(appUser);
         return appUser.getName();
     }
 
-    public LoginMesage  loginUser(LoginDTO loginDTO) {
+    public String  loginUser(LoginDTO loginDTO) {
         String msg = "";
-        AppUser user1 = UserRepository.findByName(loginDTO.getName());
+        AppUser user1 = UserRepository.getByName(loginDTO.getName());
         if (user1 != null) {
             String password = loginDTO.getPassword();
             String encodedPassword = user1.getPassword();
-            Boolean isPwdRight = passwordEncoder.matches(password, encodedPassword);
+            Boolean isPwdRight = encoder.matches(password, encodedPassword);
             if (isPwdRight) {
-                Optional<AppUser> user = UserRepository.findOneByNameAndPassword(loginDTO.getName(), encodedPassword);
+                Optional<AppUser> user = UserRepository.getOneByNameAndPassword(loginDTO.getName(), encodedPassword);
                 if (user.isPresent()) {
-                    return new LoginMesage("Login Success", true);
+                    return "Login Success";
                 } else {
-                    return new LoginMesage("Login Failed", false);
+                    return "Login Failed";
                 }
             } else {
-                return new LoginMesage("password Not Match", false);
+                return "Password Not Match";
             }
         }else {
-            return new LoginMesage("Name not exits", false);
+            return "Name Not Exits";
         }
     }
 }
