@@ -3,16 +3,14 @@ package com.GraduationProject.test.controllers;
 import com.GraduationProject.test.DTOs.LoginDTO;
 import com.GraduationProject.test.DTOs.LoginMesage;
 import com.GraduationProject.test.DTOs.UserDTO;
-import com.GraduationProject.test.repositories.UserService;
+import com.GraduationProject.test.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/api/users")
+@RestController
 @CrossOrigin
+@RequestMapping("api/v1/users")
 public class UserController {
     @Autowired
     private UserService userService;

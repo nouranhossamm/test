@@ -5,20 +5,18 @@ import com.GraduationProject.test.DTOs.LoginMesage;
 import com.GraduationProject.test.DTOs.UserDTO;
 import com.GraduationProject.test.entities.AppUser;
 import com.GraduationProject.test.repositories.UserRepository;
-import com.GraduationProject.test.repositories.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserImpl implements UserService {
+public class UserService{
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
     public String addUser(UserDTO userDTO) {
         AppUser appUser = new AppUser(
                 userDTO.getId(),
@@ -29,7 +27,7 @@ public class UserImpl implements UserService {
         userRepository.save(appUser);
         return appUser.getName();
     }
-    @Override
+
     public LoginMesage  loginUser(LoginDTO loginDTO) {
         String msg = "";
         AppUser user1 = UserRepository.findByName(loginDTO.getName());
@@ -48,7 +46,7 @@ public class UserImpl implements UserService {
                 return new LoginMesage("password Not Match", false);
             }
         }else {
-            return new LoginMesage("Email not exits", false);
+            return new LoginMesage("Name not exits", false);
         }
     }
 }
